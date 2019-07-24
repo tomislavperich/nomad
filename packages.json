@@ -1,0 +1,29 @@
+{
+    "base": [
+        "make",
+        "coreutils",
+        "net-tools",
+        "curl",
+        "wget",
+        "tmux",
+        "zsh",
+        "vim",
+        "git"
+    ],
+    "extended": [
+        "snapd",
+        "firefox"
+    ],
+    "dev": [
+        "nodejs",
+        "npm"
+    ],
+    "awesome_wm": [
+        "awesome",
+        "awesome-extra"
+    ],
+    "i3_wm": [
+        "i3"
+    ]
+}
+

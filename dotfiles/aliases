@@ -1,0 +1,45 @@
+# List command
+alias l="ls --color=auto --group-directories-first"
+alias ll="l -l"
+alias la="l -A"
+alias lsa="l -Ali"
+
+# Moving around
+alias ~="cd ~"
+alias ..="cd ../"
+alias ...="cd ../../"
+alias ....="cd ../../../"
+
+# Directories
+alias cc="cd ~/code"
+alias ccp="cd ~/code/python"
+alias cct="cd ~/code/tickets"
+alias ccl="cd ~/code/lowlevel"
+alias cdd="cd ~/Downloads"
+
+# Utility
+alias space="du -sh ."
+
+# Binaries
+if command -v nvim > /dev/null; then
+	alias vim="nvim"
+fi
+
+alias tmux="tmux -f ~/.config/tmux/main.conf"
+
+# Config & source files
+alias erc="nvim ~/.zshrc"
+alias eal="nvim ~/.aliases"
+alias evc="nvim ~/.config/nvim/"
+alias evrc="nvim ~/.config/nvim/init.vim"
+
+alias src="source ~/.zshrc"
+alias sal="source ~/.aliases"
+
+# SSH
+alias cs="ssh station"
+
+# Unalias zsh's aliases
+if command -v _ > /dev/null; then
+    unalias _
+fi
