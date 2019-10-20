@@ -46,6 +46,18 @@ def parse_args() -> dict:
         metavar='config_file',
         help="Path to config file",
     )
+    parser.add_argument(
+        "-p", "--profile",
+        type=str,
+        metavar="profile",
+        help="Profile to operate on"
+    )
+    parser.add_argument(
+        "--show",
+        dest="show",
+        action="store_true",
+        help="Show config file"
+    )
 
     dotfile_args = parser.add_mutually_exclusive_group()
     dotfile_args.add_argument(
@@ -94,5 +106,13 @@ def find_config() -> str:
 
 
 args = parse_args()
+
 conf_path = args["config"] or find_config()
-config = Config(conf_path)
+profile = args["profile"]
+config = Config(conf_path, profile)
+
+# Check if args = copy then call dotfile handler
+paths = config.paths
+
+if args["show"]:
+    config.print_config()

@@ -3,19 +3,26 @@ import os
 import yaml
 
 
-class ConfigHandler:
+class ConfigHandler():
     """Manages config files.
 
     Manages configuration files. Takes care of loading and more.
 
     Attributes:
-        path: A string indicating the path of the config file to use
+        path: A string indicating the path of the config file to use.
+        profile: Profile to use.
     """
 
-    def __init__(self, path: str = ""):
+    def __init__(self, path: str = "", profile_name: str = ""):
         """Initializes Config class with config"""
+        self.profile = profile_name
+        self.config = self._try_load(path)
+        self.paths = self.get_paths(self.config, self.profile)
+
+    # TODO: Move loading logic outside class
+    def _try_load(self, path: str) -> dict:
         try:
-            self.config = self.load(path)
+            return self.load(path)
         except FileNotFoundError as e:
             print(f"[!] File '{path}' hasn't been found")
             exit(1)
@@ -48,6 +55,29 @@ class ConfigHandler:
 
         return data
 
-    def print(self):
-        """Prints config file contents."""
-        print(yaml.safe_dump(self.config))
+    def get_paths(self, config: dict, profile: str = "") -> list:
+        if profile:
+            return self._get_profile_paths(config, profile)
+
+        return self._get_all_paths(config)
+
+    def _get_profile_paths(self, config, profile_name) -> list:
+        profile = self.config[profile_name]
+        return profile["dotfiles"]
+
+    def _get_all_paths(self, config: dict) -> list:
+        keys = list(config.keys())
+        paths = []
+        for key in keys:
+            for path in config[key]["dotfiles"]:
+                paths.append(path)
+
+        return paths
+
+    def format_config(self):
+        """Formats config file contents for printing."""
+        return yaml.safe_dump(self.config)
+
+    def print_config(self):
+        """Prints formatted config"""
+        print(self.format_config())
