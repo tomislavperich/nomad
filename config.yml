@@ -1,0 +1,7 @@
+ubuntu:
+  dotfiles:
+    - ~/.config/i3
+    - ~/.config/polybar
+    - ~/.config/zsh
+    - ~/.xprofile
+
