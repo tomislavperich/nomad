@@ -18,6 +18,7 @@ class ConfigHandler:
             self.config = self.load(path)
         except FileNotFoundError as e:
             print(f"[!] File '{path}' hasn't been found")
+            exit(1)
 
     def load(self, path: str) -> dict:
         """Loads config file from path.
