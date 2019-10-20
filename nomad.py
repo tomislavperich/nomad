@@ -25,7 +25,7 @@ from helpers.file_helper import find_file
 def parse_args() -> argparse.Namespace:
     """Parses command line arguments.
 
-    Parses command line arguments and returns a dictionary.
+    Parses command line arguments and returns a Namespace dictionary.
 
     Returns:
         dict: A dict containing passed arguments and their values.
