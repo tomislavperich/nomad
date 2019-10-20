@@ -14,7 +14,10 @@ class ConfigHandler:
 
     def __init__(self, path: str = ""):
         """Initializes Config class with config"""
-        self.config = self.load(path)
+        try:
+            self.config = self.load(path)
+        except FileNotFoundError as e:
+            print(f"[!] File '{path}' hasn't been found")
 
     def load(self, path: str) -> dict:
         """Loads config file from path.
@@ -27,6 +30,9 @@ class ConfigHandler:
 
         Returns:
             A dictionary containing config file's data.
+
+        Raises:
+            FileNotFoundError: If config file is not found.
         """
         data: dict = {}
 
@@ -36,6 +42,8 @@ class ConfigHandler:
                     data = yaml.safe_load(stream)
                 except yaml.YAMLError as e:
                     print(f"[!] Error: {e}")
+        else:
+            raise FileNotFoundError(f"File {path} not found")
 
         return data
 
