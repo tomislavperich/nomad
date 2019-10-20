@@ -63,7 +63,7 @@ def parse_args() -> argparse.Namespace:
 
 
 def find_config() -> str:
-    """Attempts to find config.
+    """Attempts to find config file.
 
     Looks for config.yml in usual directories.
 
