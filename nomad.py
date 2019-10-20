@@ -22,13 +22,13 @@ from handlers import Config
 from helpers.file_helper import find_file
 
 
-def parse_args() -> argparse.Namespace:
+def parse_args() -> dict:
     """Parses command line arguments.
 
-    Parses command line arguments and returns a Namespace dictionary.
+    Parses command line arguments and returns them.
 
     Returns:
-        dict: A dict containing passed arguments and their values.
+        dict: A dict containing parsed arguments and their values.
         For example:
 
         { 
@@ -59,7 +59,8 @@ def parse_args() -> argparse.Namespace:
         help="Bootstrap config files",
     )
 
-    return parser.parse_args()
+    args = parser.parse_args()
+    return vars(args)
 
 
 def find_config() -> str:
@@ -93,5 +94,5 @@ def find_config() -> str:
 
 
 args = parse_args()
-conf_path = args.config or find_config()
+conf_path = args["config"] or find_config()
 config = Config(conf_path)
