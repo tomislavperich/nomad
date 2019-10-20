@@ -56,16 +56,29 @@ class ConfigHandler():
         return data
 
     def get_paths(self, config: dict, profile: str = "") -> list:
+        """Gets list of paths from config.
+
+        Retrieves a list of dotfile paths from config.
+
+        Args:
+            config: Config dict with dotfile paths.
+            profile: Optional profile to take from config.
+
+        Returns:
+            list: List of paths from config.
+        """
         if profile:
             return self._get_profile_paths(config, profile)
 
         return self._get_all_paths(config)
 
     def _get_profile_paths(self, config, profile_name) -> list:
+        """Gets list of paths for a single profile."""
         profile = self.config[profile_name]
         return profile["dotfiles"]
 
     def _get_all_paths(self, config: dict) -> list:
+        """Gets all paths from a config."""
         keys = list(config.keys())
         paths = []
         for key in keys:
