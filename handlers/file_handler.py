@@ -12,7 +12,7 @@ class FileHandler():
 
         shutil.copyfile(path, local_path)
         """
-        print("Updating dir, hurr durr...")
+        print("Updating file, hurr durr...")
 
     def bootstrap(self, path: Path) -> None:
         """
