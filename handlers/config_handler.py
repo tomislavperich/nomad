@@ -1,10 +1,9 @@
 import os
-import json
 
 import yaml
 
 
-class Config:
+class ConfigHandler:
     """Manages config files.
 
     Manages configuration files. Takes care of loading and more.
