@@ -32,7 +32,10 @@ class DotfileHandler:
         Returns:
             Returns resolved, absolute Path object.
         """
-        return Path(path).resolve()
+        if path.startswith("~"):
+            return Path(path).expanduser()
+
+        return Path(path).absolute()
 
     def _get_path_type(self, path: Path) -> str:
         """Determines path type.
