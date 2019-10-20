@@ -18,7 +18,7 @@ import argparse
 
 import yaml
 
-from handlers import Config
+from handlers import Config, Dotfile
 from helpers.file_helper import find_file
 
 
@@ -105,14 +105,38 @@ def find_config() -> str:
         exit(1)
 
 
-args = parse_args()
+def update_dotfiles(dotfiles: list):
+    """Updates dotfiles from list."""
+    for dotfile in dotfiles:
+        dotfile.update()
 
-conf_path = args["config"] or find_config()
-profile = args["profile"]
-config = Config(conf_path, profile)
 
-# Check if args = copy then call dotfile handler
-paths = config.paths
+def bootstrap_dotfiles(dotfiles: list):
+    """Bootstraps dotfiles from list."""
+    for dotfile in dotfiles:
+        dotfile.bootstrap()
 
-if args["show"]:
-    config.print_config()
+
+def main():
+    args = parse_args()
+    conf_path = args["config"] or find_config()
+    profile = args["profile"]
+
+    config = Config(conf_path, profile)
+    paths = config.paths
+
+    dotfiles = []
+    for path in paths:
+        dotfiles.append(Dotfile(path))
+
+    if args["show"]:
+        config.print_config()
+
+    if args["update"]:
+        update_dotfiles(dotfiles)
+    elif args["bootstrap"]:
+        bootstrap_dotfiles(dotfiles)
+
+
+if __name__ == '__main__':
+    main()
