@@ -105,13 +105,13 @@ def find_config() -> str:
         exit(1)
 
 
-def update_dotfiles(dotfiles: list):
+def update_dotfiles(dotfiles: list) -> None:
     """Updates dotfiles from list."""
     for dotfile in dotfiles:
         dotfile.update()
 
 
-def bootstrap_dotfiles(dotfiles: list):
+def bootstrap_dotfiles(dotfiles: list) -> None:
     """Bootstraps dotfiles from list."""
     for dotfile in dotfiles:
         dotfile.bootstrap()

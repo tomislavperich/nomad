@@ -12,9 +12,9 @@ class DotfileHandlerFactory:
         Returns:
             DotfileHandler: Handler for dotfiles
         """
-        if path_type == 'file':
+        if path_type == "file":
             return FileHandler()
-        elif path_type == 'dir':
+        elif path_type == "dir":
             return DirHandler()
         else:
             raise ValueError(f"Unknown path type: {path_type}")
