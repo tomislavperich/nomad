@@ -126,8 +126,15 @@ class DotfileHandler:
    # ? Maybe rename these two methods to fetch/push
     def update(self) -> None:
         """Fetches dotfiles from given path"""
-        self.handler.update(self.absolute, self.destination)
+        if self.absolute.exists():
+            self.handler.update(self.absolute, self.destination)
+        else:
+            raise FileNotFoundError(f"{self.path} does not exist")
 
     def bootstrap(self) -> None:
         """Bootstraps dotfiles to given path."""
-        self.handler.bootstrap(self.absolute, self.destination)
+        if self.absolute.exists():
+            print("Exists")
+            self.handler.bootstrap(self.absolute, self.destination)
+        else:
+            raise FileNotFoundError(f"{self.path} does not exist")

@@ -108,14 +108,22 @@ def find_config() -> str:
 def update_dotfiles(dotfiles: list) -> None:
     """Updates dotfiles from list."""
     for dotfile in dotfiles:
-        dotfile.update()
+        try:
+            dotfile.update()
+        except Exception as e:
+            print(f"[!] Skipping, {e}")
+
     print("[+] Done!")
 
 
 def bootstrap_dotfiles(dotfiles: list) -> None:
     """Bootstraps dotfiles from list."""
     for dotfile in dotfiles:
-        dotfile.bootstrap()
+        try:
+            dotfile.bootstrap()
+        except Exception as e:
+            print(f"[!] Skipping, {e}")
+
     print("[+] Done!")
 
 
@@ -125,10 +133,9 @@ def main():
     profile = args["profile"]
 
     config = Config(conf_path, profile)
-    paths = config.paths
 
     dotfiles = []
-    for path in paths:
+    for path in config.paths:
         dotfiles.append(Dotfile(path))
 
     if args["show"]:

@@ -16,5 +16,3 @@ class DotfileHandlerFactory:
             return FileHandler()
         elif path_type == "dir":
             return DirHandler()
-        else:
-            raise ValueError(f"Unknown path type: {path_type}")
