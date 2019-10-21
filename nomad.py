@@ -50,7 +50,7 @@ def parse_args() -> dict:
         "-p", "--profile",
         type=str,
         metavar="profile",
-        help="Profile to operate on"
+        help="Profile to use"
     )
     parser.add_argument(
         "--show",
@@ -63,12 +63,12 @@ def parse_args() -> dict:
     dotfile_args.add_argument(
         "-u", "--update",
         action="store_true",
-        help="Update config files",
+        help="Update dotfiles",
     )
     dotfile_args.add_argument(
         "-b", "--bootstrap",
         action="store_true",
-        help="Bootstrap config files",
+        help="Bootstrap dotfiles",
     )
 
     args = parser.parse_args()
