@@ -16,26 +16,54 @@ class DotfileHandler:
 
     def __init__(self, path: str):
         """Initializes Dotfile class."""
-        self.path = path
-        self.absolute_path = self._resolve_path(path)
-        self.path_type = self._get_path_type(self.absolute_path)
+        self.path = Path(path)
+        self.local_base = "dotfiles"
+        self.absolute = self._get_absolute(self.path)
+        self.relative = self._get_relative(self.path)
+        self.is_file = self._is_file(self.absolute)
+        self.category = self._get_path_category(self.path)
+        self.path_type = self._get_path_type(self.absolute)
+        self.destination = self._get_local_dest(self.path)
 
         factory = DotfileHandlerFactory()
-        self.dotfile_handler = factory.get_handler(self.path_type)
+        self.handler = factory.get_handler(self.path_type)
 
-    def _resolve_path(self, path: str) -> Path:
+    def _get_absolute(self, path: Path) -> Path:
         """Resolves given path to absolute.
 
         Args:
             path: Path to be resolved.
 
         Returns:
-            Returns resolved, absolute Path object.
+            Path: resolved, absolute Path.
         """
-        if path.startswith("~"):
-            return Path(path).expanduser()
+        return path.expanduser().absolute()
 
-        return Path(path).absolute()
+    def _get_relative(self, path: Path) -> Path:
+        """Resolves given path to relative to home.
+
+        Args:
+            path: Path to be resolved.
+
+        Returns:
+            Path: Resolved, relative Path.
+        """
+        return path.relative_to("~")
+
+    def _is_file(self, path: Path) -> bool:
+        """Determines whether path points to file.
+
+        Args:
+            path: Path string pointing to file or dir.
+
+        Returns:
+            bool: True if path points to file, false otherwise.
+        """
+        return path.is_file()
+
+    def _get_filename(self, path: Path) -> str:
+        """Gets filename from Path"""
+        return path.name
 
     def _get_path_type(self, path: Path) -> str:
         """Determines path type.
@@ -46,7 +74,7 @@ class DotfileHandler:
             path: Path to the dotfile.
 
         Returns:
-            Returns a string indicating path type.
+            str: A string indicating path type.
         """
         if path.is_dir():
             return 'dir'
@@ -55,11 +83,51 @@ class DotfileHandler:
 
         return 'unknown'
 
-    # ? Maybe rename these two methods to fetch/push
+    def _get_path_category(self, path: Path) -> str:
+        """Determines path category.
+
+        Determines path category for placing files locally.
+
+        Args:
+            path: Path str to determine category of.
+
+        Returns:
+            str: Category in which file belongs.
+        """
+        if str(path).startswith("/"):
+            return "global"
+        elif str(path).startswith("~"):
+            return "local"
+
+        return "custom"
+
+    def _get_local_dest(self, path: Path) -> Path:
+        """Gets local destination for copying.
+
+        Gets local destination based on source path.
+
+        Args:
+            path: Path string to build destination path from.
+
+        Returns:
+            str: Path pointing to local destination.
+        """
+        dest = ""
+
+        if self.category == "global":
+            dest = f"{self.local_base}/global/{path}"
+        elif self.category == "local":
+            dest = f"{self.local_base}/local/{self.relative}"
+        else:
+            dest = f"{self.local_base}/custom/{self.relative}"
+
+        return Path(dest)
+
+   # ? Maybe rename these two methods to fetch/push
     def update(self) -> None:
         """Fetches dotfiles from given path"""
-        self.dotfile_handler.update(self.absolute_path)
+        self.handler.update(self.absolute, self.destination)
 
     def bootstrap(self) -> None:
         """Bootstraps dotfiles to given path."""
-        self.dotfile_handler.bootstrap(self.absolute_path)
+        self.handler.bootstrap(self.absolute, self.destination)

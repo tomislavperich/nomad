@@ -1,20 +1,28 @@
+import shutil
 from pathlib import Path
 
 
 class FileHandler():
-    def update(self, path: Path) -> None:
+    def update(self, src: Path, dst: Path) -> None:
+        """Copies a file.
+
+        Copies file from source to destination.
+
+        Args:
+            src: Absolute Path to file to copy from.
+            dest: Absolute Path to file to copy to.
         """
-        home_path = os.getenv("HOME")
-        local_path = path.relative_to(home_path)
+        # Does parent directory exist?
+        print(f"[+] Updating [file]: \t{str(src).ljust(30)} -> {dst}")
+        if not dst.parent.exists():
+            dst.parent.mkdir(parents=True)
 
-        if not local_path.exists():
-            local_path.mkdir()
+        try:
+            shutil.copy(src, dst)
+        except shutil.Error as e:
+            print(f"[!] Error: {e}")
 
-        shutil.copyfile(path, local_path)
-        """
-        print("Updating file, hurr durr...")
-
-    def bootstrap(self, path: Path) -> None:
+    def bootstrap(self, src: Path, dst: Path) -> None:
         """
         home_path = os.getenv("HOME")
         remote_path = f"{home_path}/{path}"

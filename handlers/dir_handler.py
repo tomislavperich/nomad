@@ -1,20 +1,28 @@
+import os
+import shutil
 from pathlib import Path
 
 
 class DirHandler():
-    def update(self, path: Path) -> None:
+    def update(self, src: Path, dst: Path) -> None:
+        """Copies a directory.
+
+        Copies directory from source to destination.
+
+        Args:
+            src: Absolute Path to directory source.
+            dest: Absolute Path to directory destination.
         """
-        home_path = os.getenv("HOME")
-        local_path = path.relative_to(home_path)
+        print(f"[+] Updating [dir]: \t{str(src).ljust(30)} -> {dst}")
+        if dst.exists():
+            shutil.rmtree(dst)
 
-        if not local_path.exists()
-            path.mkdir()
+        try:
+            shutil.copytree(src, dst)
+        except shutil.Error as e:
+            print(f"[!] Error: {e}")
 
-        shutil.copy(path, local_path)
-        """
-        print("Updating dir, hurr durr...")
-
-    def bootstrap(self, path: Path) -> None:
+    def bootstrap(self, src: Path, dest: Path) -> None:
         """
         home_path = os.getenv("HOME")
         local_dir = os.getcwd()
