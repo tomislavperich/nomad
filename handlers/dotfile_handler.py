@@ -134,7 +134,6 @@ class DotfileHandler:
     def bootstrap(self) -> None:
         """Bootstraps dotfiles to given path."""
         if self.absolute.exists():
-            print("Exists")
             self.handler.bootstrap(self.absolute, self.destination)
         else:
             raise FileNotFoundError(f"{self.path} does not exist")
