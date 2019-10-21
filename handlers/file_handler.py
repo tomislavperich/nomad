@@ -12,7 +12,7 @@ class FileHandler():
             src: Absolute Path to file to copy from.
             dest: Absolute Path to file to copy to.
         """
-        print(f"[+] Updating [file]: \t{str(src).ljust(30)} -> {dst}")
+        print(f"[+] Updating [file]: \t{str(dst).ljust(30)} <- {src}")
         if not dst.parent.exists():
             dst.parent.mkdir(parents=True)
 

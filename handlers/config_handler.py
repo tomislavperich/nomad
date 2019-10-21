@@ -71,6 +71,7 @@ class ConfigHandler():
             print(f"[i] Using profile {profile}")
             return self._get_profile_paths(config, profile)
 
+        print(f"[i] Using all profiles")
         return self._get_all_paths(config)
 
     def _get_profile_paths(self, config, profile_name) -> list:

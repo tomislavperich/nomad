@@ -13,7 +13,7 @@ class DirHandler():
             src: Absolute Path to directory source.
             dest: Absolute Path to directory destination.
         """
-        print(f"[+] Updating [dir]: \t{str(src).ljust(30)} -> {dst}")
+        print(f"[+] Updating [dir]: \t{str(dst).ljust(30)} <- {src}")
         if dst.exists():
             shutil.rmtree(dst)
 
