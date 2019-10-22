@@ -18,7 +18,7 @@ Bootstrap dotfiles to system, create backups, and overwrite backups if they alre
 
 Use profile "ubuntu" to deploy dotfiles and show config.
 
-- `./nomad.py -u -p ubuntu --show
+- `./nomad.py -u -p ubuntu --show`
 
 Use a custom config.yml to update dotfiles from.
 
