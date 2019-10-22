@@ -16,15 +16,15 @@ Your dotfiles will be inside the dotfiles folder inside nomad directory.
 
 Bootstrap dotfiles to system, create backups, and overwrite backups if they already exist.
 
-- `./nomad.py -b --backup --overwrite`
+`./nomad.py -b --backup --overwrite`
 
 Use profile "ubuntu" to deploy dotfiles and show config.
 
-- `./nomad.py -u -p ubuntu --show`
+`./nomad.py -u -p ubuntu --show`
 
 Use a custom config.yml to update dotfiles from.
 
-- `./nomad.py -u -c ~/Desktop/dotfile-config.yml`
+`./nomad.py -u -c ~/Desktop/dotfile-config.yml`
 
 ##### Install requirements
 
