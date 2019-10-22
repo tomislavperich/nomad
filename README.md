@@ -1,5 +1,7 @@
 # Nomad
 
+Dotfiles on the move
+
 ### Usage
 
 1. Clone repository using `git clone https://github.com/tperich/nomad`.
