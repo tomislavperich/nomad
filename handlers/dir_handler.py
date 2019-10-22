@@ -1,13 +1,14 @@
-import os
 import shutil
 from pathlib import Path
 
 
 class DirHandler():
-    def update(self, src: Path, dst: Path) -> None:
+    """Handles directory operations."""
+
+    def update(self, src: Path, dst: Path, overwrite: bool = False) -> None:
         """Copies a directory.
 
-        Copies directory from source to destination.
+        Copies directory from system.
 
         Args:
             src: Absolute Path to directory source.
@@ -22,16 +23,66 @@ class DirHandler():
         except shutil.Error as e:
             print(f"[!] Error: {e}")
 
-    def bootstrap(self, src: Path, dest: Path) -> None:
-        """
-        home_path = os.getenv("HOME")
-        local_dir = os.getcwd()
-        relative_path = path.relative_to(local_dir)
-        remote_path = Path(f"{home_path}/{relative_path}")
+    def bootstrap(
+        self,
+        src: Path,
+        dst: Path,
+        backup: bool = False,
+        overwrite: bool = False,
+    ) -> None:
+        """Bootstraps a directory.
 
-        if not remote_path.exists():
-            remote_path.mkdir()
+        Bootstraps directory to system.
 
-        shutil.copy(path, remote_path)
+        Args:
+            src: Absolute Path to directory source.
+            dst: Absolute Path to directory destination.
+            backup: Boolean indicating whether files should be backed up.
+            overwrite: Boolean indicating whether to overwrite backups.
         """
-        print("Bootstrapping dir, hurr durr...")
+        print(f"[+] Strapping [dir]: \t{str(src).ljust(30)} -> {dst}")
+        if dst.exists():
+            if backup:
+                self.backup(dst, overwrite)
+
+            self.delete(dst)
+
+        try:
+            shutil.copytree(src, dst)
+        except shutil.Error as e:
+            print(f"[!] Error: {e}")
+
+    def backup(self, path: Path, overwrite: bool = False) -> None:
+        """Creates a backup of dir.
+
+        Creates a backup of [dir] named [dir].backup.
+
+        Args:
+            path: Path to dir to back up.
+        """
+        backup_path = Path(f"{path}.backup")
+
+        if backup_path.exists() and not overwrite:
+            try:
+                choice = input("Backup exists. Overwrite? [Y/n]: ")
+            except KeyboardInterrupt:
+                exit(0)
+
+            if choice == ("y" or "Y" or ""):
+                self.delete(backup_path)
+        else:
+            self.delete(backup_path)
+
+        try:
+            shutil.copytree(path, f"{path}.backup")
+        except shutil.Error as e:
+            print(f"[!] Error: {e}")
+
+    def delete(self, path: Path) -> None:
+        """Deletes a dir.
+
+        Args:
+            path: Path to directory to delete.
+        """
+        if path.exists():
+            shutil.rmtree(path)

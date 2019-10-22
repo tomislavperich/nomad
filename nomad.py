@@ -58,6 +58,16 @@ def parse_args() -> dict:
         action="store_true",
         help="Show config file"
     )
+    parser.add_argument(
+        "--backup",
+        action="store_true",
+        help="Back up existing files on bootstrap",
+    )
+    parser.add_argument(
+        "--overwrite",
+        action="store_true",
+        help="Overwrite existing backups",
+    )
 
     dotfile_args = parser.add_mutually_exclusive_group()
     dotfile_args.add_argument(
@@ -116,11 +126,15 @@ def update_dotfiles(dotfiles: list) -> None:
     print("[+] Done!")
 
 
-def bootstrap_dotfiles(dotfiles: list) -> None:
+def bootstrap_dotfiles(
+    dotfiles: list,
+    backup: bool,
+    overwrite: bool,
+) -> None:
     """Bootstraps dotfiles from list."""
     for dotfile in dotfiles:
         try:
-            dotfile.bootstrap()
+            dotfile.bootstrap(backup, overwrite)
         except Exception as e:
             print(f"[!] Skipping, {e}")
 
@@ -144,7 +158,11 @@ def main():
     if args["update"]:
         update_dotfiles(dotfiles)
     elif args["bootstrap"]:
-        bootstrap_dotfiles(dotfiles)
+        bootstrap_dotfiles(
+            dotfiles,
+            args["backup"],
+            args["overwrite"],
+        )
 
 
 if __name__ == '__main__':

@@ -1,4 +1,3 @@
-import os
 import shutil
 from pathlib import Path
 
@@ -23,7 +22,6 @@ class DotfileHandler:
         self.is_file = self._is_file(self.absolute)
         self.category = self._get_path_category(self.path)
         self.path_type = self._get_path_type(self.absolute)
-        self.destination = self._get_local_dest(self.path)
 
         factory = DotfileHandlerFactory()
         self.handler = factory.get_handler(self.path_type)
@@ -107,7 +105,7 @@ class DotfileHandler:
         Gets local destination based on source path.
 
         Args:
-            path: Path string to build destination path from.
+            path: Path to build destination path from.
 
         Returns:
             str: Path pointing to local destination.
@@ -123,17 +121,41 @@ class DotfileHandler:
 
         return Path(dest)
 
+    def _get_local_src(self, path: Path) -> Path:
+        """Gets local source path for copying.
+
+        Gets local source path based on passed source path.
+
+        Args:
+            path: Path to build local source path from.
+
+        Returns:
+            str: Path pointing to local source.
+        """
+        src = ""
+        path_stripped = ""
+
+        if str(path).startswith("~"):
+            path_stripped = str(path).replace("~/", "")
+
+        if self.category == "global":
+            src = f"{self.local_base}/global/{path_stripped}"
+        elif self.category == "local":
+            src = f"{self.local_base}/local/{path_stripped}"
+        else:
+            src = f"{self.local_base}/custom/{path_stripped}"
+
+        return Path(src)
+
    # ? Maybe rename these two methods to fetch/push
     def update(self) -> None:
         """Fetches dotfiles from given path"""
-        if self.absolute.exists():
-            self.handler.update(self.absolute, self.destination)
-        else:
-            raise FileNotFoundError(f"{self.path} does not exist")
+        destination = self._get_local_dest(self.absolute)
 
-    def bootstrap(self) -> None:
+        self.handler.update(self.absolute, destination)
+
+    def bootstrap(self, backup: bool, overwrite: bool) -> None:
         """Bootstraps dotfiles to given path."""
-        if self.absolute.exists():
-            self.handler.bootstrap(self.absolute, self.destination)
-        else:
-            raise FileNotFoundError(f"{self.path} does not exist")
+        src = self._get_local_src(self.path)
+
+        self.handler.bootstrap(src, self.absolute, backup, overwrite)
