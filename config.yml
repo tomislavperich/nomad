@@ -4,4 +4,7 @@ ubuntu:
     - ~/.config/polybar
     - ~/.config/zsh
     - ~/.xprofile
+    - ~/scripts
+    - ~/.scripts
+    - ~/.ssh
 
