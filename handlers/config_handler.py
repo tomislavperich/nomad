@@ -68,8 +68,13 @@ class ConfigHandler():
             list: List of paths from config.
         """
         if profile:
-            print(f"[i] Using profile {profile}")
-            return self._get_profile_paths(config, profile)
+            try:
+                profile_data = self._get_profile_paths(config, profile)
+                print(f"[i] Using profile {profile}")
+
+                return profile_data
+            except:
+                print(f"[!] Profile {profile} not found")
 
         print(f"[i] Using all profiles")
         return self._get_all_paths(config)
