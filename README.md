@@ -26,6 +26,14 @@ Use a custom config.yml to update dotfiles from.
 
 `./nomad.py -u -c ~/Desktop/dotfile-config.yml`
 
+### Roadmap
+
+- [ ] Add file/dir filtering based on .gitignore files
+- [ ] Group backups into a single user-defined directory
+- [ ] Add support for achiving and/or compressing backup files
+- [ ] Write tests & documentation
+- [ ] Start versioning, package and distribute on PyPi
+
 ##### Install requirements
 
 Note that we're using `pip3` here for python3. Depending on your system you might want to use just `pip`. You can check which version of python your pip uses by running `pip -V`.
