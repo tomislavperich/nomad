@@ -132,7 +132,7 @@ class DotfileHandler:
     def update(self) -> None:
         """Fetches dotfiles from given path"""
         destination = self._get_local_dest(self.absolute)
-        path_type = self._get_path_type(destination)
+        path_type = self._get_path_type(self.absolute)
 
         handler = self.factory.get_handler(path_type)
         handler.update(self.absolute, destination)
