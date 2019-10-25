@@ -81,14 +81,15 @@ class DotfileHandler:
         """
         dest = ""
 
+        if str(path).startswith("~"):
+            path = path.relative_to("~")
+
         if self.category == "global":
             dest = f"{self.local_base}/global/{path}"
         elif self.category == "local":
-            relative = path.relative_to("~")
-            dest = f"{self.local_base}/local/{relative}"
+            dest = f"{self.local_base}/local/{path}"
         else:
-            relative = path.relative_to("~")
-            dest = f"{self.local_base}/custom/{relative}"
+            dest = f"{self.local_base}/custom/{path}"
 
         return Path(dest)
 
