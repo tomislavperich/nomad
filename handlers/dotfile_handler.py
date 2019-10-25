@@ -18,7 +18,6 @@ class DotfileHandler:
         self.path = Path(path)
         self.local_base = "dotfiles"
         self.absolute = self._get_absolute(self.path)
-        self.relative = self._get_relative(self.path)
         self.category = self._get_path_category(self.path)
         self.factory = DotfileHandlerFactory()
 
@@ -32,17 +31,6 @@ class DotfileHandler:
             Path: resolved, absolute Path.
         """
         return path.expanduser().absolute()
-
-    def _get_relative(self, path: Path) -> Path:
-        """Resolves given path to relative to home.
-
-        Args:
-            path: Path to be resolved.
-
-        Returns:
-            Path: Resolved, relative Path.
-        """
-        return path.relative_to("~")
 
     def _get_path_type(self, path: Path) -> str:
         """Determines path type.
@@ -59,8 +47,8 @@ class DotfileHandler:
             return 'dir'
         elif path.is_file():
             return 'file'
-
-        return 'unknown'
+        else:
+            raise FileNotFoundError(f"File {path} not found")
 
     def _get_path_category(self, path: Path) -> str:
         """Determines path category.
@@ -96,9 +84,11 @@ class DotfileHandler:
         if self.category == "global":
             dest = f"{self.local_base}/global/{path}"
         elif self.category == "local":
-            dest = f"{self.local_base}/local/{self.relative}"
+            relative = path.relative_to("~")
+            dest = f"{self.local_base}/local/{relative}"
         else:
-            dest = f"{self.local_base}/custom/{self.relative}"
+            relative = path.relative_to("~")
+            dest = f"{self.local_base}/custom/{relative}"
 
         return Path(dest)
 
@@ -114,17 +104,16 @@ class DotfileHandler:
             str: Path pointing to local source.
         """
         src = ""
-        path_stripped = ""
 
         if str(path).startswith("~"):
-            path_stripped = str(path).replace("~/", "")
+            path = Path(str(path).replace("~/", ""))
 
         if self.category == "global":
-            src = f"{self.local_base}/global/{path_stripped}"
+            src = f"{self.local_base}/global{path}"
         elif self.category == "local":
-            src = f"{self.local_base}/local/{path_stripped}"
+            src = f"{self.local_base}/local/{path}"
         else:
-            src = f"{self.local_base}/custom/{path_stripped}"
+            src = f"{self.local_base}/custom/{path}"
 
         return Path(src)
 
@@ -132,11 +121,10 @@ class DotfileHandler:
     def update(self) -> None:
         """Fetches dotfiles from given path"""
         destination = self._get_local_dest(self.absolute)
-        path_type = self._get_path_type(self.absolute)
-
-        handler = self.factory.get_handler(path_type)
 
         try:
+            path_type = self._get_path_type(self.absolute)
+            handler = self.factory.get_handler(path_type)
             handler.update(self.absolute, destination)
         except Exception as e:
             print(f"[!] Skipping {self.path}: {e}")
@@ -144,11 +132,10 @@ class DotfileHandler:
     def bootstrap(self, backup: bool, overwrite: bool) -> None:
         """Bootstraps dotfiles to given path."""
         src = self._get_local_src(self.path)
-        path_type = self._get_path_type(src)
-
-        handler = self.factory.get_handler(path_type)
 
         try:
+            path_type = self._get_path_type(src)
+            handler = self.factory.get_handler(path_type)
             handler.bootstrap(src, self.absolute, backup, overwrite)
         except Exception as e:
             print(f"[!] Skipping {self.path}: {e}")
