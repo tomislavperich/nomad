@@ -3,8 +3,8 @@ ubuntu:
     - ~/.config/i3
     - ~/.config/polybar
     - ~/.config/zsh
-    - ~/.xprofile
     - ~/scripts
     - ~/.scripts
+    - ~/.zprofile
     - ~/.ssh
 
