@@ -1,5 +1,6 @@
 # Nomad
 dotfiles
+config.yml
 
 # Lint
 .mypy_cache
