@@ -135,7 +135,11 @@ class DotfileHandler:
         path_type = self._get_path_type(self.absolute)
 
         handler = self.factory.get_handler(path_type)
-        handler.update(self.absolute, destination)
+
+        try:
+            handler.update(self.absolute, destination)
+        except Exception as e:
+            print(f"[!] Skipping {self.path}: {e}")
 
     def bootstrap(self, backup: bool, overwrite: bool) -> None:
         """Bootstraps dotfiles to given path."""
@@ -143,4 +147,8 @@ class DotfileHandler:
         path_type = self._get_path_type(src)
 
         handler = self.factory.get_handler(path_type)
-        handler.bootstrap(src, self.absolute, backup, overwrite)
+
+        try:
+            handler.bootstrap(src, self.absolute, backup, overwrite)
+        except Exception as e:
+            print(f"[!] Skipping {self.path}: {e}")

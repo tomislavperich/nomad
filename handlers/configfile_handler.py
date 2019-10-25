@@ -3,7 +3,7 @@ import os
 import yaml
 
 
-class ConfigHandler():
+class ConfigFileHandler():
     """Manages config files.
 
     Manages configuration files. Takes care of loading and more.
@@ -70,13 +70,11 @@ class ConfigHandler():
         if profile:
             try:
                 profile_data = self._get_profile_paths(config, profile)
-                print(f"[i] Using profile {profile}")
 
                 return profile_data
             except:
                 print(f"[!] Profile {profile} not found")
 
-        print(f"[i] Using all profiles")
         return self._get_all_paths(config)
 
     def _get_profile_paths(self, config, profile_name) -> list:
