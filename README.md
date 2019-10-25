@@ -6,7 +6,7 @@ Dotfiles on the move
 
 1. Clone repository using `git clone https://github.com/tperich/nomad`.
 2. Enter the directory and [install requirements](#install-requirements) using `pip3 install -r requirements.txt`.
-3. Create a copy of [config.example.yml](./config.example.yml) and place your dotfile paths inside.
+3. Create a copy of [config.example.yml](./config.example.yml) called `config.yml` and place your dotfile paths inside.
 4. Run `./nomad.py -u` to get the dotfiles from the system.
 5. Run `./nomad.py -b` if you want to deploy dotfiles to the system.
 
