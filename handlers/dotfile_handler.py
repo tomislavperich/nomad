@@ -19,12 +19,8 @@ class DotfileHandler:
         self.local_base = "dotfiles"
         self.absolute = self._get_absolute(self.path)
         self.relative = self._get_relative(self.path)
-        self.is_file = self._is_file(self.absolute)
         self.category = self._get_path_category(self.path)
-        self.path_type = self._get_path_type(self.absolute)
-
-        factory = DotfileHandlerFactory()
-        self.handler = factory.get_handler(self.path_type)
+        self.factory = DotfileHandlerFactory()
 
     def _get_absolute(self, path: Path) -> Path:
         """Resolves given path to absolute.
@@ -47,21 +43,6 @@ class DotfileHandler:
             Path: Resolved, relative Path.
         """
         return path.relative_to("~")
-
-    def _is_file(self, path: Path) -> bool:
-        """Determines whether path points to file.
-
-        Args:
-            path: Path string pointing to file or dir.
-
-        Returns:
-            bool: True if path points to file, false otherwise.
-        """
-        return path.is_file()
-
-    def _get_filename(self, path: Path) -> str:
-        """Gets filename from Path"""
-        return path.name
 
     def _get_path_type(self, path: Path) -> str:
         """Determines path type.
@@ -151,11 +132,15 @@ class DotfileHandler:
     def update(self) -> None:
         """Fetches dotfiles from given path"""
         destination = self._get_local_dest(self.absolute)
+        path_type = self._get_path_type(destination)
 
-        self.handler.update(self.absolute, destination)
+        handler = self.factory.get_handler(path_type)
+        handler.update(self.absolute, destination)
 
     def bootstrap(self, backup: bool, overwrite: bool) -> None:
         """Bootstraps dotfiles to given path."""
         src = self._get_local_src(self.path)
+        path_type = self._get_path_type(src)
 
-        self.handler.bootstrap(src, self.absolute, backup, overwrite)
+        handler = self.factory.get_handler(path_type)
+        handler.bootstrap(src, self.absolute, backup, overwrite)
