@@ -62,19 +62,31 @@ class DirHandler():
         """
         backup_path = Path(f"{path}.backup")
 
-        if backup_path.exists() and not overwrite:
-            try:
-                choice = input("Backup exists. Overwrite? [Y/n]: ")
-            except KeyboardInterrupt:
-                exit(0)
-
-            if choice == ("y" or "Y" or ""):
+        if backup_path.exists():
+            if overwrite:
                 self.delete(backup_path)
-        else:
-            self.delete(backup_path)
+            else:
+                try:
+                    choice = input("Backup exists. Overwrite? [Y/n]: ")
+                except KeyboardInterrupt:
+                    exit(0)
 
+                if choice == ("y" or "Y" or ""):
+                    self.delete(backup_path)
+                else:
+                    return
+
+        self.copy(path, backup_path)
+
+    def copy(self, src: Path, dst: Path) -> None:
+        """Copies a dir.
+
+        Args:
+            src: Source path.
+            dst: Destination path.
+        """
         try:
-            shutil.copytree(path, f"{path}.backup")
+            shutil.copytree(src, dst)
         except shutil.Error as e:
             print(f"[!] Error: {e}")
 

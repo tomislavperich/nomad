@@ -67,19 +67,31 @@ class FileHandler():
         """
         backup_path = Path(f"{path}.backup")
 
-        if backup_path.exists() and not overwrite:
-            try:
-                choice = input("Backup already exists. Overwrite? [Y/n]: ")
-            except KeyboardInterrupt:
-                exit(0)
-
-            if choice == ("y" or "Y" or ""):
+        if backup_path.exists():
+            if overwrite:
                 self.delete(backup_path)
-        else:
-            self.delete(backup_path)
+            else:
+                try:
+                    choice = input("Backup already exists. Overwrite? [Y/n]: ")
+                except KeyboardInterrupt:
+                    exit(0)
 
+                if choice == ("y" or "Y" or ""):
+                    self.delete(backup_path)
+                else:
+                    return
+
+        self.copy(path, backup_path)
+
+    def copy(self, src: Path, dst: Path) -> None:
+        """Copies a file.
+
+        Args:
+            src: Source path.
+            dst: Destination path.
+        """
         try:
-            shutil.copy(path, f"{path}.backup")
+            shutil.copy(src, dst)
         except shutil.Error as e:
             print(f"[!] Error: {e}")
 
