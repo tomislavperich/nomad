@@ -121,7 +121,7 @@ def update_dotfiles(dotfiles: list) -> None:
         try:
             dotfile.update()
         except Exception as e:
-            print(f"[!] Skipping, {e}")
+            print(f"[!] Skipping {dotfile.path}, {e}")
 
     print("[+] Done!")
 
@@ -136,7 +136,7 @@ def bootstrap_dotfiles(
         try:
             dotfile.bootstrap(backup, overwrite)
         except Exception as e:
-            print(f"[!] Skipping, {e}")
+            print(f"[!] Skipping {dotfile.path}, {e}")
 
     print("[+] Done!")
 
