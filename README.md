@@ -27,6 +27,7 @@ Use a custom config.yml to update dotfiles from.
 `./nomad.py -u -c ~/Desktop/dotfile-config.yml`
 
 Print config and exit.
+
 `./nomad.py --show`
 
 ### Roadmap
