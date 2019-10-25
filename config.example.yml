@@ -7,3 +7,4 @@ ubuntu:
     - ~/.scripts
     - ~/.zprofile
     - ~/.ssh
+    - /etc/ssh/sshd_config
