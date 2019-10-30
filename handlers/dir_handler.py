@@ -1,5 +1,9 @@
+import os
 import shutil
+from typing import List
 from pathlib import Path
+
+from helpers.file_helper import read_gitignore
 
 
 class DirHandler():
@@ -18,10 +22,12 @@ class DirHandler():
         if dst.exists():
             shutil.rmtree(dst)
 
-        try:
-            shutil.copytree(src, dst)
-        except shutil.Error as e:
-            print(f"[!] Error: {e}")
+        rules: List[str] = []
+
+        if ".gitignore" in os.listdir(src):
+            rules = read_gitignore(f"{src}/.gitignore")
+
+        self.copy(src, dst, rules)
 
     def bootstrap(
         self,
@@ -78,15 +84,19 @@ class DirHandler():
 
         self.copy(path, backup_path)
 
-    def copy(self, src: Path, dst: Path) -> None:
+    def copy(self, src: Path, dst: Path, ignore_rules: List[str] = []) -> None:
         """Copies a dir.
 
         Args:
             src: Source path.
             dst: Destination path.
+            rules: A list of ignore rules/patterns.
         """
         try:
-            shutil.copytree(src, dst)
+            shutil.copytree(
+                src, dst,
+                ignore=shutil.ignore_patterns(*ignore_rules)
+            )
         except shutil.Error as e:
             print(f"[!] Error: {e}")
 
