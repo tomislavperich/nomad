@@ -121,7 +121,7 @@ class DotfileHandler:
    # ? Maybe rename these two methods to fetch/push
     def update(self) -> None:
         """Fetches dotfiles from given path"""
-        destination = self._get_local_dest(self.absolute)
+        destination = self._get_local_dest(self.path)
 
         try:
             path_type = self._get_path_type(self.absolute)
