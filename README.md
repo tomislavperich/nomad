@@ -35,6 +35,7 @@ Print config and exit.
 - [x] Add file/dir filtering based on .gitignore files
 - [ ] Group backups into a single user-defined directory
 - [ ] Add support for achiving and/or compressing backup files
+- [ ] Incremental mode
 - [ ] Write tests & documentation
 - [ ] Start versioning, package and distribute on PyPi
 
