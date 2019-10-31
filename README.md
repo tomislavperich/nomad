@@ -32,7 +32,7 @@ Print config and exit.
 
 ### Roadmap
 
-- [ ] Add file/dir filtering based on .gitignore files
+- [x] Add file/dir filtering based on .gitignore files
 - [ ] Group backups into a single user-defined directory
 - [ ] Add support for achiving and/or compressing backup files
 - [ ] Write tests & documentation
