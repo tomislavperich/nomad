@@ -30,14 +30,17 @@ Print config and exit.
 
 `./nomad.py --show`
 
-### Roadmap
+### Todo
 
-- [x] Add file/dir filtering based on .gitignore files
+- [x] File/dir filtering based on .gitignore files
+- [ ] Config for nomad
 - [ ] Group backups into a single user-defined directory
-- [ ] Add support for achiving and/or compressing backup files
+- [ ] Support for achiving and/or compressing backup files
 - [ ] Incremental mode
+- [ ] Package nomad
+- [ ] `add` command for "picking up" dotfiles from anywhere
 - [ ] Write tests & documentation
-- [ ] Start versioning, package and distribute on PyPi
+- [ ] Create issues for this instead of keeping it in the README
 
 ##### Install requirements
 
