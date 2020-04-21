@@ -21,7 +21,6 @@ from handlers import Config, Dotfile
 from helpers.argparse_helper import Parser
 from helpers.config_helper import find_config
 
-
 class Main:
     def __init__(self, config: Config):
         self.config = config
